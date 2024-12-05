@@ -37,6 +37,9 @@
     "url": "https://github.com/sigoden/marked-katex-extension/issues"
   },
   "homepage": "https://github.com/sigoden/marked-katex-extension#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "katex": ">=0.16 <0.17",
     "marked": ">=4 <16"
