@@ -39,3 +39,5 @@ marked.use(markedKatex(options));
 
 marked.parse("katex: $c = \\pm\\sqrt{a^2 + b^2}$");
 ```
+
+![image](https://github.com/user-attachments/assets/a24c3c3b-3085-463d-ad12-ed6e92c30e3c)
