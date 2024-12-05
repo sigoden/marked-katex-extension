@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Renderer with LaTeX Support</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@sigodenjs/marked-katex-extension/lib/index.umd.js"></script> -->
+    <script src="./lib/index.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs/dist/cdn.min.js" defer></script>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app {
+            display: flex;
+            height: 100%;
+        }
+
+        .input {
+            width: 50%;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ccc;
+            resize: none;
+        }
+
+        .output {
+            width: 50%;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ccc;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app" x-data="app">
+        <textarea class="input" x-model="markdownInput" @input="renderMarkdown"
+            placeholder="Enter Markdown..."></textarea>
+        <div class="output" x-html="renderedOutput" x-ref="output"></div>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('app', () => ({
+                markdownInput: `
+This is inline katex: $c = \\pm\\sqrt{a^2 + b^2}$
+
+This is block level katex:
+
+$$
+c = \\pm\\sqrt{a^2 + b^2}
+$$
+
+This is block level katex include newline:
+
+$$
+\\begin{array}{cc}
+   a & b \\\\
+   c & d
+\\end{array}
+$$
+
+This is inline katex with custom delimiters: 
+
+- \\(c = \\pm\\sqrt{a^2 + b^2}\\) 
+- \\[c = \\pm\\sqrt{a^2 + b^2}\\]
+
+This is inline katex without space: nospace$x=x^2$4$x=x^2$nospace
+`,
+                renderedOutput: '',
+                init() {
+                    marked.use(markedKatex({ throwOnError: false, inlineTolerantNoSpace: true }));
+                    this.$nextTick(() => {
+                        this.renderMarkdown();
+                    });
+                },
+                renderMarkdown() {
+                    this.renderedOutput = marked.parse(this.markdownInput);
+                },
+            }));
+        });
+    </script>
+
+</body>
+
+</html>
