@@ -23,6 +23,8 @@
     }
   },
   "scripts": {
+    "prepublishOnly": "npm run clean && npm run build",
+    "clean": "rimraf lib",
     "build": "rollup -c rollup.config.js"
   },
   "repository": {
@@ -44,6 +46,7 @@
     "globals": "^15.13.0",
     "katex": "^0.16.11",
     "marked": "^15.0.3",
+    "rimraf": "^6.0.1",
     "rollup": "^4.28.0"
   },
   "dependencies": {
